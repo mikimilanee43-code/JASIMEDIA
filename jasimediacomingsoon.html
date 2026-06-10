@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JASIMEDIA - Coming Soon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            background: #fff;
+        }
+
+        .page {
+            position: relative;
+            min-height: 100vh;
+            display: grid;
+            grid-template-rows: 26vh 44vh 30vh;
+            text-align: center;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .page::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: linear-gradient(
+                135deg,
+                #000 0%,
+                #111 20%,
+                #3d3d3d 38%,
+                #6b6b6b 52%,
+                #9b9b9b 66%,
+                #d8d8d8 82%,
+                #f5f5f5 100%
+            );
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 3px 16px rgba(0,0,0,0.35);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Old English Text MT", "Times New Roman", serif;
+            font-size: clamp(72px, 14vw, 180px);
+            font-weight: 400;
+            letter-spacing: 3px;
+            line-height: 0.95;
+            color: #fff;
+            text-shadow: 0 8px 28px rgba(0,0,0,0.48);
+        }
+
+        .footer-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            align-self: start;
+            justify-self: center;
+            width: min(680px, calc(100% - 48px));
+            margin-top: 34px;
+            padding: 34px 28px;
+            background-color: #000;
+            border-radius: 22px;
+        }
+
+        .footer-message p {
+            font-size: clamp(18px, 3vw, 30px);
+            font-weight: 300;
+            letter-spacing: 1.5px;
+            color: #fff;
+        }
+
+        .instagram-link {
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.72);
+            border-radius: 999px;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            background-color: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            transition: background-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .instagram-link:hover {
+            background-color: rgba(255,255,255,0.24);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                grid-template-rows: 24vh 42vh 34vh;
+            }
+
+            .eyebrow {
+                font-size: 12px;
+                letter-spacing: 3px;
+            }
+
+            .brand {
+                letter-spacing: 1px;
+            }
+
+            .footer-message p {
+                max-width: 320px;
+                line-height: 1.4;
+            }
+
+            .footer-message {
+                width: calc(100% - 40px);
+                margin-top: 28px;
+                padding: 28px 22px;
+                border-radius: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <p class="eyebrow">Coming Soon</p>
+
+        <h1 class="brand">Jasimedia</h1>
+
+        <div class="footer-message">
+            <p>Stay tuned. We are launching soon.</p>
+            <a class="instagram-link" href="https://www.instagram.com/jasimabudan/?hl=en" target="_blank" rel="noopener noreferrer">@jasimabudan</a>
+        </div>
+    </main>
+</body>
+</html>
