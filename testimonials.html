@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JASIMEDIA - Testimonials</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background-color: rgba(255,255,255,0.95);
+            padding: 0 50px;
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo { display: flex; align-items: center; }
+        .logo img { height: 22px; }
+        .logo-wordmark {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 1px;
+            color: #000;
+        }
+        nav { display: flex; gap: 28px; align-items: center; }
+
+        nav a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 400;
+            font-size: 12px;
+            letter-spacing: 0.8px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover { color: #667eea; }
+        nav a.active { color: #667eea; }
+
+        .cta-button {
+            background-color: #000;
+            color: #fff !important;
+            padding: 6px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: 0.8px;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover { background-color: #333 !important; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 22px;
+            height: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 200;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 1.5px;
+            width: 100%;
+            background-color: #000;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+            transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255,255,255,0.98);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .mobile-menu.open { max-height: 500px; opacity: 1; }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding: 14px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s, color 0.2s;
+            display: block;
+        }
+
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover { background-color: #f8f8f8; color: #667eea; }
+
+        .mobile-menu .cta-button {
+            margin: 16px 24px;
+            text-align: center;
+            border-radius: 20px;
+            padding: 10px 24px;
+            background-color: #000;
+            color: #fff !important;
+            border-bottom: none;
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            background-color: #6b6b6b;
+            text-align: center;
+            padding: 70px 50px 50px;
+        }
+
+        .page-header h1 {
+            font-size: 64px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 1px;
+        }
+
+        /* ── LOGO MARQUEE ── */
+        .logos-section {
+            background: #fff;
+            padding: 50px 0;
+            overflow: hidden;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logos-label {
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: #aaa;
+            margin-bottom: 36px;
+            text-transform: uppercase;
+        }
+
+        .marquee-outer { overflow: hidden; }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 30s linear infinite;
+        }
+
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        .logo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 180px;
+            flex-shrink: 0;
+            padding: 0 20px;
+        }
+
+        .logo-item img {
+            height: 52px;
+            width: 130px;
+            object-fit: contain;
+            opacity: 1;
+        }
+
+        .logo-item span {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: #bbb;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* ── TESTIMONIALS GRID ── */
+        .testimonials-section {
+            padding: 80px 60px 100px;
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .testimonial-column { display: flex; flex-direction: column; }
+
+        .column-label {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        /* ── SLIDESHOW CARD ── */
+        .slideshow-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.09);
+            overflow: hidden;
+            flex: 1;
+            height: 650px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-image-area {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            flex: 0 0 280px;
+            overflow: hidden;
+            background: #111;
+        }
+
+        .slide-image-area img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.7s ease;
+        }
+
+        .slide-image-area img.active { opacity: 1; }
+
+        .slide-quote-area {
+            padding: 32px 38px 28px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quote-mark {
+            font-size: 72px;
+            line-height: 0.55;
+            color: #e5e5e5;
+            font-family: Georgia, serif;
+            margin-bottom: 18px;
+            display: block;
+        }
+
+        /* Quote crossfade container */
+        .slide-quotes {
+            position: relative;
+            flex: 1;
+            min-height: 190px;
+        }
+
+        .slide-quote {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.7s ease;
+            pointer-events: none;
+        }
+
+        .slide-quote.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .slide-quote p {
+            font-size: 15px;
+            line-height: 1.85;
+            color: #444;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .attribution {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #111;
+        }
+
+        .attribution span {
+            font-weight: 400;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* Controls row */
+        .slide-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .slide-dots { display: flex; gap: 8px; }
+
+        .slide-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            border: none;
+            padding: 0;
+        }
+
+        .slide-dot.active { background: #000; transform: scale(1.35); }
+
+        .slide-arrows { display: flex; gap: 10px; }
+
+        .slide-arrow {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid #ddd;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #555;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+
+        .slide-arrow:hover { border-color: #000; background: #000; color: #fff; }
+
+        /* ── FOOTER ── */
+        footer {
+            background-color: #6b6b6b;
+            padding: 24px 50px;
+            text-align: center;
+        }
+
+        footer p {
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin: 0;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+        }
+
+        footer a:hover { opacity: 1; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            header { padding: 0 20px; height: 44px; position: sticky; }
+            nav { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { display: flex; }
+
+            .page-header { padding: 50px 24px 40px; }
+            .page-header h1 { font-size: 40px; }
+
+            .testimonials-section {
+                grid-template-columns: 1fr;
+                padding: 50px 24px 60px;
+                gap: 40px;
+            }
+
+            .slideshow-card { height: 620px; }
+            .slide-image-area { height: 220px; flex-basis: 220px; }
+            .slide-quote-area { padding: 24px; }
+            .slide-quotes { min-height: 230px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo logo-wordmark">JASIMEDIA</div>
+        <nav>
+            <a href="homepage.html">HOME</a>
+            <a href="me.html">ME</a>
+            <a href="portfolio.html">PORTFOLIO</a>
+            <a href="testimonials.html" class="active">TESTIMONIALS</a>
+            <a href="#services">SERVICES</a>
+            <a href="#contact" class="cta-button">CONTACT</a>
+        </nav>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+            <a href="homepage.html" class="mobile-link">HOME</a>
+            <a href="me.html" class="mobile-link">ME</a>
+            <a href="portfolio.html" class="mobile-link">PORTFOLIO</a>
+            <a href="testimonials.html" class="mobile-link">TESTIMONIALS</a>
+            <a href="#services" class="mobile-link">SERVICES</a>
+            <a href="#contact" class="cta-button mobile-link">CONTACT</a>
+        </div>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <h1>Testimonials</h1>
+        <p>Kind words from the people and brands I've had the privilege of working with</p>
+    </div>
+
+    <!-- LOGO MARQUEE — replace logo img src values with real logos -->
+    <section class="logos-section">
+        <p class="logos-label">Trusted by</p>
+        <div class="marquee-outer">
+            <div class="marquee-track">
+                <!-- Add future logos to this single set only. The page duplicates them for the infinite loop. -->
+                <div class="logo-item"><img src="jasimtestimonialsHOHlogo.webp" alt="House of Highlights logo"><span>House of Highlights</span></div>
+                <div class="logo-item"><img src="jasimtestimonialscarbonelogo.webp" alt="Carbone logo"><span>Carbone</span></div>
+                <div class="logo-item"><img src="jasimtestimonilaslincolnlogo.webp" alt="Lincoln logo"><span>Lincoln</span></div>
+                <div class="logo-item"><img src="jasimedistestimonilassheamoisturelogo.webp" alt="Shea Moisture logo"><span>Shea Moisture</span></div>
+                <div class="logo-item"><img src="jasimedistestimonilasgymsharklogo.webp" alt="Gymshark logo"><span>Gymshark</span></div>
+                <div class="logo-item"><img src="jasimedistestimonilasolympialogo.webp" alt="Olympia logo"><span>Olympia</span></div>
+                <div class="logo-item"><img src="jasimedistestimonilaswwelogo.webp" alt="WWE logo"><span>WWE</span></div>
+                <div class="logo-item"><img src="jasimedistestimonilasnikelogo.webp" alt="Nike logo"><span>Nike</span></div>
+                <div class="logo-item"><img src="jasimedistestimonilaschampsportslogo.webp" alt="Champs Sports logo"><span>Champs Sports</span></div>
+                <div class="logo-item"><img src="jasimedistestimonilaspalmtreelogo.webp" alt="Palm Tree Music Festival logo"><span>Palm Tree Music Festival</span></div>
+                <div class="logo-item"><img src="jasimedistestimonilasbestbuddieslogo.webp" alt="Best Buddies logo"><span>Best Buddies</span></div>
+                <div class="logo-item"><img src="jasimediatestimonialsbumenergylogo.webp" alt="Bum Energy logo"><span>Bum Energy</span></div>
+                <div class="logo-item"><img src="jasimediatestimonialslogooreo.webp" alt="Oreo logo"><span>Oreo</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section">
+
+        <!-- PEOPLE SLIDESHOW -->
+        <div class="testimonial-column">
+            <p class="column-label">People</p>
+            <div class="slideshow-card">
+                <div class="slide-image-area" id="peopleImages">
+                    <img src="jasimediatestimonilas Kai Greene.webp" alt="Kai Greene" class="active" />
+                    <img src="jasimediatestimonilasdenispic.webp" alt="Denis Shapovalov" />
+                    <img src="jasimediatestimonilas Shelby.webp" alt="Shelby">
+                </div>
+                <div class="slide-quote-area">
+                    <span class="quote-mark">"</span>
+                    <div class="slide-quotes" id="peopleQuotes">
+                        <div class="slide-quote active">
+                            <p>Jasim has an incredible eye for detail. Working with him felt effortless — he captured moments I didn't even know were happening. The final product blew everyone away.</p>
+                            <div class="attribution">Kai Greene <span>· Bodybuilding Icon & Artist</span></div>
+                        </div>
+                        <div class="slide-quote">
+                            <p>I've worked with a lot of media people over the years, but Jasim stands out. He understood the energy of the moment and translated it into something truly special on screen.</p>
+                            <div class="attribution">Denis Shapovalov <span>· Professional Tennis Player</span></div>
+                        </div>
+                        <div class="slide-quote">
+                            <p>Working with Jasim has been an incredible experience. His professionalism, creativity, and attention to detail consistently exceed expectations. He truly understands my vision and always delivers high-quality results that make me feel confident, supported, and excited about every project.</p>
+                            <div class="attribution">Shelby Sapp <span>&middot; Founder of SheSells Academy</span></div>
+                        </div>
+                    </div>
+                    <div class="slide-controls">
+                        <div class="slide-dots" id="peopleDots">
+                            <button class="slide-dot active"></button>
+                            <button class="slide-dot"></button>
+                            <button class="slide-dot"></button>
+                        </div>
+                        <div class="slide-arrows">
+                            <button class="slide-arrow" onclick="changeSlide('people', -1)">&#8249;</button>
+                            <button class="slide-arrow" onclick="changeSlide('people', 1)">&#8250;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPANIES SLIDESHOW -->
+        <div class="testimonial-column">
+            <p class="column-label">Companies & Brands</p>
+            <div class="slideshow-card">
+                <div class="slide-image-area" id="companyImages">
+                    <img src="jasimediatestimonilas Carbone.webp" alt="Carbone" class="active">
+                    <img src="jasimediatestimonials Best Buddies.webp" alt="Best Buddies International">
+                </div>
+                <div class="slide-quote-area">
+                    <span class="quote-mark">"</span>
+                    <div class="slide-quotes" id="companyQuotes">
+                        <div class="slide-quote active">
+                            <p>JASIMEDIA delivered content that perfectly captured the essence of our brand. The quality, the lighting, the storytelling — everything was exactly what we needed and more.</p>
+                            <div class="attribution">Carbone <span>· Restaurant & Hospitality Group</span></div>
+                        </div>
+                        <div class="slide-quote">
+                            <p>Jasim has been a fantastic creative partner for Best Buddies. His professionalism, reliability, and attention to detail consistently shine through in his work. He understands our mission and delivers high-quality content that helps us share meaningful stories and connect with our community.</p>
+                            <div class="attribution">Best Buddies International <span>&middot; Global Nonprofit for Inclusion &amp; Empowerment</span></div>
+                        </div>
+                    </div>
+                    <div class="slide-controls">
+                        <div class="slide-dots" id="companyDots">
+                            <button class="slide-dot active"></button>
+                            <button class="slide-dot"></button>
+                        </div>
+                        <div class="slide-arrows">
+                            <button class="slide-arrow" onclick="changeSlide('company', -1)">&#8249;</button>
+                            <button class="slide-arrow" onclick="changeSlide('company', 1)">&#8250;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>© 2026 JASIMEDIA. All rights reserved. All images are copyrighted. Unauthorized use is prohibited.</p>
+    </footer>
+
+    <script>
+        const marqueeTrack = document.querySelector('.marquee-track');
+        const marqueeLogoItems = marqueeTrack
+            ? Array.from(marqueeTrack.children).map(item => item.cloneNode(true))
+            : [];
+
+        function buildLogoMarquee() {
+            if (!marqueeTrack || marqueeLogoItems.length === 0) {
+                return;
+            }
+
+            const logoWidth = 180;
+            const setWidth = marqueeLogoItems.length * logoWidth;
+            const repeatCount = Math.max(2, Math.ceil((window.innerWidth * 1.25) / setWidth));
+            const loopItems = [];
+
+            for (let i = 0; i < repeatCount; i++) {
+                marqueeLogoItems.forEach(item => loopItems.push(item.cloneNode(true)));
+            }
+
+            marqueeTrack.innerHTML = '';
+
+            [false, true].forEach(isDuplicateSet => {
+                loopItems.forEach(item => {
+                    const clone = item.cloneNode(true);
+                    if (isDuplicateSet) {
+                        clone.setAttribute('aria-hidden', 'true');
+                    }
+                    marqueeTrack.appendChild(clone);
+                });
+            });
+
+            marqueeTrack.style.animationDuration = `${Math.max(24, loopItems.length * 3)}s`;
+        }
+
+        buildLogoMarquee();
+
+        let marqueeResizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(marqueeResizeTimer);
+            marqueeResizeTimer = setTimeout(buildLogoMarquee, 150);
+        });
+
+        const slideshows = {
+            people: {
+                current: 0,
+                total: 3,
+                images: document.getElementById('peopleImages'),
+                quotes: document.getElementById('peopleQuotes'),
+                dots:   document.getElementById('peopleDots'),
+            },
+            company: {
+                current: 0,
+                total: 2,
+                images: document.getElementById('companyImages'),
+                quotes: document.getElementById('companyQuotes'),
+                dots:   document.getElementById('companyDots'),
+            }
+        };
+
+        function changeSlide(key, dir) {
+            const s = slideshows[key];
+            goToSlide(key, (s.current + dir + s.total) % s.total);
+        }
+
+        function goToSlide(key, index) {
+            const s = slideshows[key];
+
+            s.images.querySelectorAll('img')[s.current].classList.remove('active');
+            s.images.querySelectorAll('img')[index].classList.add('active');
+
+            s.quotes.querySelectorAll('.slide-quote')[s.current].classList.remove('active');
+            s.quotes.querySelectorAll('.slide-quote')[index].classList.add('active');
+
+            s.dots.querySelectorAll('.slide-dot')[s.current].classList.remove('active');
+            s.dots.querySelectorAll('.slide-dot')[index].classList.add('active');
+
+            s.current = index;
+        }
+
+        // Wire up dots
+        ['people', 'company'].forEach(key => {
+            slideshows[key].dots.querySelectorAll('.slide-dot').forEach((dot, i) => {
+                dot.addEventListener('click', () => goToSlide(key, i));
+            });
+        });
+
+        // Auto-advance (offset so they don't change at the same time)
+        setInterval(() => changeSlide('people',  1), 6000);
+        setInterval(() => changeSlide('company', 1), 7500);
+
+        // ── Hamburger ──
+        const btn  = document.getElementById('hamburgerBtn');
+        const menu = document.getElementById('mobileMenu');
+
+        btn.addEventListener('click', () => {
+            const isOpen = menu.classList.toggle('open');
+            btn.classList.toggle('open', isOpen);
+            btn.setAttribute('aria-expanded', isOpen);
+            menu.setAttribute('aria-hidden', !isOpen);
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('open');
+                btn.classList.remove('open');
+                btn.setAttribute('aria-expanded', false);
+                menu.setAttribute('aria-hidden', true);
+            });
+        });
+    </script>
+
+</body>
+</html>

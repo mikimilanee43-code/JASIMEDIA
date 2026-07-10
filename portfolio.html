@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JASIMEDIA - Portfolio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background-color: rgba(255,255,255,0.95);
+            padding: 0 50px;
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo { display: flex; align-items: center; }
+        .logo img { height: 22px; }
+
+        .logo-wordmark {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 1px;
+            color: #000;
+        }
+
+        nav { display: flex; gap: 28px; align-items: center; }
+
+        nav a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 400;
+            font-size: 12px;
+            letter-spacing: 0.8px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover { color: #667eea; }
+        nav a.active { color: #667eea; }
+
+        .cta-button {
+            background-color: #000;
+            color: #fff !important;
+            padding: 6px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: 0.8px;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover { background-color: #333 !important; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 22px;
+            height: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 200;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 1.5px;
+            width: 100%;
+            background-color: #000;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+            transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255,255,255,0.98);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .mobile-menu.open { max-height: 500px; opacity: 1; }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding: 14px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s, color 0.2s;
+            display: block;
+        }
+
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover { background-color: #f8f8f8; color: #667eea; }
+
+        .mobile-menu .cta-button {
+            margin: 16px 24px;
+            text-align: center;
+            border-radius: 20px;
+            padding: 10px 24px;
+            background-color: #000;
+            color: #fff !important;
+            border-bottom: none;
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            background-color: #6b6b6b;
+            text-align: center;
+            padding: 70px 50px 50px;
+        }
+
+        .page-title {
+            font-size: 64px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+
+        /* ── PORTFOLIO ROWS ── */
+        .portfolio-section {
+            padding: 70px 60px 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .portfolio-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .portfolio-row.img-left  { direction: ltr; }
+        .portfolio-row.img-right { direction: rtl; }
+        .portfolio-row.img-right > * { direction: ltr; }
+
+        .portfolio-img-wrap {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .portfolio-row:hover .portfolio-img-wrap {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 50px rgba(0,0,0,0.2);
+        }
+
+        .portfolio-img-wrap img,
+        .portfolio-img-wrap video {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-row:hover .portfolio-img-wrap img,
+        .portfolio-row:hover .portfolio-img-wrap video {
+            transform: scale(1.04);
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 64px;
+            height: 64px;
+            background: rgba(255,255,255,0.18);
+            border: 2px solid rgba(255,255,255,0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            transition: background 0.3s;
+        }
+
+        .portfolio-row:hover .play-icon { background: rgba(255,255,255,0.32); }
+        .play-icon svg { margin-left: 4px; }
+
+        .portfolio-text { padding: 20px 10px; }
+
+        .portfolio-text .category-tag {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .portfolio-text h3 {
+            font-size: 42px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #222;
+            margin-bottom: 18px;
+            line-height: 1.1;
+        }
+
+        .portfolio-text p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .portfolio-text h3 + p + p {
+            display: none;
+        }
+
+        .explore-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #000;
+            color: #fff;
+            padding: 13px 28px;
+            border-radius: 25px;
+            font-size: 13px;
+            letter-spacing: 2px;
+            font-weight: 500;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .explore-btn:hover { background: #333; }
+
+        .card-hint {
+            display: block;
+            font-size: 11px;
+            color: #bbb;
+            letter-spacing: 1px;
+            margin-top: 14px;
+        }
+
+        /* ── CTA SECTION ── */
+        .cta-section {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            padding: 90px 50px;
+        }
+
+        .cta-section h2 {
+            font-size: 52px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            font-size: 16px;
+            opacity: 0.65;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+        }
+
+        .cta-section a {
+            display: inline-block;
+            border: 2px solid #fff;
+            color: #fff;
+            text-decoration: none;
+            padding: 16px 44px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .cta-section a:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            transition: background 0.3s;
+        }
+
+        .portfolio-card:hover .play-icon {
+            background: rgba(255,255,255,0.35);
+        }
+
+        .play-icon svg {
+            margin-left: 4px;
+        }
+
+        /* ── LIGHTBOX MODAL ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            position: relative;
+            width: 90%;
+            max-width: 860px;
+            background: #111;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        /* Close button */
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 32px;
+            cursor: pointer;
+            z-index: 10;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .modal-close:hover { opacity: 1; }
+
+        /* Slides wrapper */
+        .slides-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide.active { display: block; }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide iframe,
+        .slide video {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .slide video {
+            display: block;
+            background: #000;
+            object-fit: contain;
+        }
+
+        /* Arrow buttons */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: #fff;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            backdrop-filter: blur(4px);
+        }
+
+        .arrow:hover { background: rgba(255,255,255,0.3); }
+        .arrow.prev { left: 14px; }
+        .arrow.next { right: 14px; }
+
+        /* Dots */
+        .modal-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px;
+            background: #111;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #555;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .dot.active { background: #fff; }
+
+        /* Modal title */
+        .modal-title {
+            text-align: center;
+            color: #fff;
+            font-size: 13px;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            padding-bottom: 16px;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background-color: #6b6b6b;
+            padding: 24px 50px;
+            text-align: center;
+        }
+
+        footer p {
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin: 0;
+            opacity: 0.85;
+            transition: opacity 0.2s;
+        }
+
+        footer a:hover { opacity: 1; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            header { padding: 0 20px; height: 44px; position: sticky; }
+            nav { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { display: flex; }
+
+            .page-header { padding: 50px 24px 40px; }
+            .page-title { font-size: 40px; }
+
+            .portfolio-section { padding: 40px 24px 60px; gap: 50px; }
+
+            .portfolio-row {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                direction: ltr !important;
+            }
+
+            .portfolio-row > * { direction: ltr !important; }
+
+            .portfolio-img-wrap img,
+            .portfolio-img-wrap video { height: 240px; }
+
+            .portfolio-text h3 { font-size: 30px; }
+
+            .arrow { width: 38px; height: 38px; font-size: 18px; }
+
+            .cta-section { padding: 60px 24px; }
+            .cta-section h2 { font-size: 36px; }
+        }
+
+        /* Apple-inspired portfolio showcase */
+        .page-header {
+            background: #1d1d1f;
+            text-align: left;
+            padding: 96px 50px 78px;
+        }
+
+        .page-title,
+        .page-subtitle {
+            max-width: 1120px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-title {
+            font-size: clamp(42px, 7vw, 78px);
+            line-height: 1.02;
+            letter-spacing: 0;
+            margin-bottom: 20px;
+        }
+
+        .page-subtitle {
+            max-width: 760px;
+            margin-left: max(0px, calc((100% - 1120px) / 2));
+            color: rgba(255,255,255,0.64);
+            line-height: 1.75;
+        }
+
+        .portfolio-showcases {
+            background: #fff;
+        }
+
+        .portfolio-showcase {
+            position: relative;
+            overflow: hidden;
+            padding: 86px 0 96px;
+        }
+
+        .showcase-dark {
+            background: #090909;
+            color: #fff;
+        }
+
+        .showcase-grey {
+            background: #dedede;
+            color: #111;
+        }
+
+        .showcase-white {
+            background: #fff;
+            color: #111;
+        }
+
+        .showcase-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 50px;
+        }
+
+        .showcase-intro {
+            max-width: 760px;
+            margin-bottom: 34px;
+        }
+
+        .showcase-kicker {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #8f8f8f;
+            margin-bottom: 14px;
+        }
+
+        .showcase-dark .showcase-kicker { color: rgba(255,255,255,0.46); }
+
+        .showcase-intro h2 {
+            font-size: clamp(38px, 5vw, 64px);
+            font-weight: 300;
+            line-height: 1.04;
+            letter-spacing: 0;
+            margin-bottom: 18px;
+        }
+
+        .showcase-intro p {
+            font-size: 17px;
+            line-height: 1.78;
+            color: #5f5f5f;
+            max-width: 660px;
+        }
+
+        .showcase-dark .showcase-intro p {
+            color: rgba(255,255,255,0.66);
+        }
+
+        .showcase-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+        }
+
+        .showcase-actions .explore-btn {
+            border-radius: 28px;
+        }
+
+        .showcase-dark .explore-btn {
+            background: #fff;
+            color: #000;
+        }
+
+        .showcase-dark .explore-btn:hover {
+            background: #e4e4e4;
+        }
+
+        .showcase-count {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .showcase-dark .showcase-count { color: rgba(255,255,255,0.42); }
+
+        .carousel-wrap {
+            position: relative;
+            margin-top: 36px;
+        }
+
+        .sample-carousel {
+            display: flex;
+            gap: 22px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding: 0 max(50px, calc((100vw - 1120px) / 2)) 20px;
+            scrollbar-width: none;
+        }
+
+        .sample-carousel::-webkit-scrollbar { display: none; }
+
+        .sample-card {
+            flex: 0 0 min(76vw, 820px);
+            min-width: 320px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f6f6f6;
+            color: #111;
+            box-shadow: 0 20px 55px rgba(0,0,0,0.18);
+            scroll-snap-align: center;
+            cursor: pointer;
+            position: relative;
+            outline: none;
+            transform: translateZ(0);
+            transition: transform 0.24s ease, box-shadow 0.24s ease;
+        }
+
+        .showcase-grey .sample-card,
+        .showcase-white .sample-card {
+            box-shadow: 0 18px 44px rgba(0,0,0,0.14);
+        }
+
+        .sample-card:hover,
+        .sample-card:focus-visible {
+            transform: translateY(-4px);
+            box-shadow: 0 26px 70px rgba(0,0,0,0.24);
+        }
+
+        .sample-media {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            background: #111;
+            overflow: hidden;
+        }
+
+        .sample-media img,
+        .sample-media video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .sample-meta {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 46px 26px 24px;
+            color: #fff;
+            background: linear-gradient(to top, rgba(0,0,0,0.72), rgba(0,0,0,0));
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .sample-label {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.72);
+            margin-bottom: 8px;
+        }
+
+        .sample-title {
+            font-size: 26px;
+            font-weight: 500;
+            letter-spacing: 0;
+            line-height: 1.15;
+        }
+
+        .card-play-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.22);
+            border: 1px solid rgba(255,255,255,0.58);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            backdrop-filter: blur(7px);
+        }
+
+        .card-play-icon svg {
+            margin-left: 3px;
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.84);
+            color: #111;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+            cursor: pointer;
+            z-index: 4;
+            font-size: 28px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .carousel-arrow:hover {
+            transform: translateY(-50%) scale(1.05);
+            background: #fff;
+        }
+
+        .carousel-arrow.prev { left: max(18px, calc((100vw - 1220px) / 2)); }
+        .carousel-arrow.next { right: max(18px, calc((100vw - 1220px) / 2)); }
+
+        .carousel-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            margin-top: 12px;
+        }
+
+        .carousel-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0,0,0,0.25);
+            cursor: pointer;
+            padding: 0;
+            transition: width 0.2s ease, border-radius 0.2s ease, background 0.2s ease;
+        }
+
+        .showcase-dark .carousel-dot { background: rgba(255,255,255,0.34); }
+
+        .carousel-dot.active {
+            width: 28px;
+            border-radius: 999px;
+            background: #111;
+        }
+
+        .showcase-dark .carousel-dot.active { background: #fff; }
+
+        @media (max-width: 900px) {
+            .page-header {
+                padding: 58px 24px 48px;
+            }
+
+            .page-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .portfolio-showcase {
+                padding: 60px 0 70px;
+            }
+
+            .showcase-inner {
+                padding: 0 24px;
+            }
+
+            .showcase-intro {
+                margin-bottom: 28px;
+            }
+
+            .showcase-intro p {
+                font-size: 15px;
+            }
+
+            .sample-carousel {
+                padding: 0 24px 18px;
+                gap: 16px;
+            }
+
+            .sample-card {
+                flex-basis: 84vw;
+                min-width: 280px;
+            }
+
+            .sample-media {
+                aspect-ratio: 4 / 3;
+            }
+
+            .sample-title {
+                font-size: 21px;
+            }
+
+            .carousel-arrow {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo logo-wordmark">JASIMEDIA</div>
+        <nav>
+            <a href="homepage.html">HOME</a>
+            <a href="me.html">ME</a>
+            <a href="portfolio.html" class="active">PORTFOLIO</a>
+            <a href="testimonials.html">TESTIMONIALS</a>
+            <a href="services.html">SERVICES</a>
+            <a href="contact.html" class="cta-button">CONTACT</a>
+        </nav>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+            <a href="homepage.html" class="mobile-link">HOME</a>
+            <a href="me.html" class="mobile-link">ME</a>
+            <a href="portfolio.html" class="mobile-link">PORTFOLIO</a>
+            <a href="testimonials.html" class="mobile-link">TESTIMONIALS</a>
+            <a href="services.html" class="mobile-link">SERVICES</a>
+            <a href="contact.html" class="cta-button mobile-link">CONTACT</a>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h1 class="page-title">Portfolio</h1>
+        <p class="page-subtitle">Photography, videography, and editing work crafted for brands, events, athletes, and entrepreneurs</p>
+    </div>
+
+    <main class="portfolio-showcases">
+        <section class="portfolio-showcase showcase-dark" id="videography">
+            <div class="showcase-inner">
+                <div class="showcase-intro">
+                    <p class="showcase-kicker">Portfolio 01</p>
+                    <h2>Videography</h2>
+                    <p>Cinematic coverage for events, campaigns, interviews, reels, and brand stories built to capture attention across digital platforms.</p>
+                    <div class="showcase-actions">
+                        <button class="explore-btn" type="button" onclick="openModal('videography')">
+                            WATCH WORK
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                        </button>
+                        <span class="showcase-count">6 video samples</span>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-wrap" data-project="videography">
+                <button class="carousel-arrow prev" type="button" aria-label="Previous videography sample" data-direction="-1">&#8249;</button>
+                <div class="sample-carousel" data-carousel-project="videography" aria-label="Videography samples"></div>
+                <button class="carousel-arrow next" type="button" aria-label="Next videography sample" data-direction="1">&#8250;</button>
+                <div class="carousel-dots" aria-label="Videography carousel position"></div>
+            </div>
+        </section>
+
+        <section class="portfolio-showcase showcase-grey" id="photography">
+            <div class="showcase-inner">
+                <div class="showcase-intro">
+                    <p class="showcase-kicker">Portfolio 02</p>
+                    <h2>Photography</h2>
+                    <p>Portraits, events, lifestyle visuals, and brand imagery captured with a clean eye for light, composition, and authentic moments.</p>
+                    <div class="showcase-actions">
+                        <button class="explore-btn" type="button" onclick="openModal('photography')">
+                            VIEW WORK
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                        </button>
+                        <span class="showcase-count">7 photo samples</span>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-wrap" data-project="photography">
+                <button class="carousel-arrow prev" type="button" aria-label="Previous photography sample" data-direction="-1">&#8249;</button>
+                <div class="sample-carousel" data-carousel-project="photography" aria-label="Photography samples"></div>
+                <button class="carousel-arrow next" type="button" aria-label="Next photography sample" data-direction="1">&#8250;</button>
+                <div class="carousel-dots" aria-label="Photography carousel position"></div>
+            </div>
+        </section>
+
+        <section class="portfolio-showcase showcase-white" id="editing">
+            <div class="showcase-inner">
+                <div class="showcase-intro">
+                    <p class="showcase-kicker">Portfolio 03</p>
+                    <h2>Editing</h2>
+                    <p>Post-production, pacing, color, social cuts, and final polish shaped to make every story feel intentional and ready to publish.</p>
+                    <div class="showcase-actions">
+                        <button class="explore-btn" type="button" onclick="openModal('editing')">
+                            VIEW EDITS
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+                        </button>
+                        <span class="showcase-count">6 editing samples</span>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-wrap" data-project="editing">
+                <button class="carousel-arrow prev" type="button" aria-label="Previous editing sample" data-direction="-1">&#8249;</button>
+                <div class="sample-carousel" data-carousel-project="editing" aria-label="Editing samples"></div>
+                <button class="carousel-arrow next" type="button" aria-label="Next editing sample" data-direction="1">&#8250;</button>
+                <div class="carousel-dots" aria-label="Editing carousel position"></div>
+            </div>
+        </section>
+    </main>
+
+
+    <!-- ── LIGHTBOX MODAL ── -->
+    <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+
+            <div class="slides-wrapper">
+                <!-- Slides injected by JS -->
+                <button class="arrow prev" onclick="changeSlide(-1)">&#8249;</button>
+                <button class="arrow next" onclick="changeSlide(1)">&#8250;</button>
+            </div>
+
+            <div class="modal-dots" id="modalDots"></div>
+            <p class="modal-title" id="modalTitle"></p>
+        </div>
+    </div>
+
+    <section class="cta-section">
+        <h2>Let's Work Together</h2>
+        <p>Have a project in mind? I'd love to hear about it.</p>
+        <a href="contact.html">GET IN TOUCH</a>
+    </section>
+
+    <footer>
+        <p>© 2026 JASIMEDIA. All rights reserved. All images are copyrighted. Unauthorized use is prohibited.</p>
+    </footer>
+
+    <script>
+        // ── Data: replace placeholder URLs with real content ──
+        const projects = {
+            photography: {
+                title: 'PHOTOGRAPHY',
+                slides: [
+                    { type: 'image', title: 'Featured Photography', src: 'jasimediaportfoliophotography1.webp', alt: 'JASIMEDIA featured photography sample' },
+                    { type: 'image', title: 'Espolon Tequila', src: 'jasimediaportfoliophotography Epsolon Tequila.webp', alt: 'JASIMEDIA Espolon Tequila photography sample' },
+                    { type: 'image', title: 'Nike x Champs', src: 'jasimediaportfoliophotography Nike x Champs.webp', alt: 'JASIMEDIA Nike x Champs photography sample' },
+                    { type: 'image', title: 'Golf', src: 'jasimediaportfoliophotography Golf.webp', alt: 'JASIMEDIA golf photography sample' },
+                    { type: 'image', title: 'Aruba', src: 'jasimediaportfoliophotography Aruba.webp', alt: 'JASIMEDIA Aruba photography sample' },
+                    { type: 'image', title: 'Oreo', src: 'jasimediaportfoliophotography Oreo.webp', alt: 'JASIMEDIA Oreo photography sample' },
+                    { type: 'image', title: 'Concert', src: 'jasimediaportfoliophotography Concert.webp', alt: 'JASIMEDIA concert photography sample' },
+                ]
+            },
+            videography: {
+                title: 'VIDEOGRAPHY',
+                slides: [
+                    { type: 'video', title: 'Wedding', src: 'jasimediaportfoliovideography Wedding.mp4', mime: 'video/mp4' },
+                    { type: 'video', title: 'Shea Moisture', src: 'jasimediaportfoliovideography Shea Moisture.mp4', mime: 'video/mp4' },
+                    { type: 'video', title: 'Adrianna x Beats', src: 'jasimediaportfoliovideography Adrianna x Beats.mp4', mime: 'video/mp4' },
+                    { type: 'video', title: 'Kai Greene x Olympia 2025', src: 'jasimediaportfoliovideography Kai Greene X OLYMPIA 2025.mp4', mime: 'video/mp4' },
+                    { type: 'video', title: 'Palm Tree Festival', src: 'jasimediaportfoliovideography Palm Tree Festival.MOV' },
+                    { type: 'video', title: 'Carlos Alcaraz x Denis Shapovalov', src: 'jasimediaportfoliovideography Carlos Alcaraz X Denis Shapovalov.mov' },
+                ]
+            },
+            editing: {
+                title: 'EDITING',
+                slides: [
+                    { type: 'video', title: '2025 Recap', src: 'JASIMEDIA 2025 RECAP.mp4', mime: 'video/mp4' },
+                    { type: 'video', title: 'Lincoln Commercial feat. Serena Williams', src: 'jasimediaportfolieditLincoln Lincoln Commercial feat. Serena Williams.MP4', mime: 'video/mp4' },
+                    { type: 'video', title: 'Gov Ball Espolon', src: 'jasimediaportfoliedit6 8 Jasim Edit - Gov Ball Espolon  v1 2.MP4', mime: 'video/mp4' },
+                    { type: 'video', title: 'Kai Greene x LA Fit Expo', src: 'jasimediaportfoliedit Kai Greene X LA FIT EXPO.mp4', mime: 'video/mp4' },
+                    { type: 'video', title: 'Miami Drip GST 2025', src: 'jasimediaportfolioedit MIAMI DRIP GST 2025.mp4', mime: 'video/mp4' },
+                    { type: 'video', title: 'Arnold Classic 2026', src: 'jasimediaportfoliedit ARNOLD CLASSIC 2026.mp4', mime: 'video/mp4' },
+                ]
+            }
+        };
+
+        const getSlideNumber = index => String(index + 1).padStart(2, '0');
+
+        const getSlideTitle = (slide, project, index) => {
+            if (slide.title) return slide.title;
+            if (slide.type === 'image') return `${project.title} ${getSlideNumber(index)}`;
+
+            return slide.src
+                .replace(/\.[^.]+$/, '')
+                .replace(/^jasimediaportfoliovideography\s*/i, '')
+                .replace(/^jasimediaportfolieditLincoln\s*/i, '')
+                .replace(/^jasimediaportfoliedit6\s*/i, '')
+                .replace(/^jasimediaportfoliedit\s*/i, '')
+                .replace(/^jasimediaportfolioedit\s*/i, '')
+                .replace(/^JASIMEDIA\s*/i, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        };
+
+        const escapeHtml = value => {
+            const replacements = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            };
+
+            return String(value).replace(/[&<>"']/g, character => replacements[character]);
+        };
+
+        function renderPortfolioCarousels() {
+            document.querySelectorAll('[data-carousel-project]').forEach(track => {
+                const key = track.dataset.carouselProject;
+                const project = projects[key];
+                if (!project) return;
+
+                track.innerHTML = '';
+
+                project.slides.forEach((slide, index) => {
+                    const slideTitle = getSlideTitle(slide, project, index);
+                    const card = document.createElement('article');
+                    card.className = 'sample-card';
+                    card.tabIndex = 0;
+                    card.setAttribute('role', 'button');
+                    card.setAttribute('aria-label', `Open ${slideTitle} fullscreen`);
+
+                    const media = document.createElement('div');
+                    media.className = 'sample-media';
+
+                    if (slide.type === 'image') {
+                        const img = document.createElement('img');
+                        img.src = slide.src;
+                        img.alt = slide.alt || `${project.title} sample ${index + 1}`;
+                        img.loading = 'lazy';
+                        media.appendChild(img);
+                    } else {
+                        const video = document.createElement('video');
+                        video.muted = true;
+                        video.loop = true;
+                        video.autoplay = true;
+                        video.playsInline = true;
+                        video.preload = 'metadata';
+                        video.setAttribute('aria-label', `${slideTitle} video`);
+
+                        const source = document.createElement('source');
+                        source.src = slide.src;
+                        if (slide.mime) source.type = slide.mime;
+                        video.appendChild(source);
+                        media.appendChild(video);
+                    }
+
+                    const meta = document.createElement('div');
+                    meta.className = 'sample-meta';
+                    meta.innerHTML = `
+                        <div>
+                            <span class="sample-label">${project.title} ${getSlideNumber(index)}</span>
+                            <strong class="sample-title">${escapeHtml(slideTitle)}</strong>
+                        </div>
+                        <span class="card-play-icon" aria-hidden="true">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><polygon points="5,3 19,12 5,21"/></svg>
+                        </span>
+                    `;
+                    media.appendChild(meta);
+
+                    card.appendChild(media);
+                    card.addEventListener('click', () => openModal(key, index));
+                    card.addEventListener('keydown', event => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            openModal(key, index);
+                        }
+                    });
+
+                    track.appendChild(card);
+                });
+            });
+        }
+
+        function setupPortfolioCarousels() {
+            document.querySelectorAll('.carousel-wrap').forEach(wrap => {
+                const track = wrap.querySelector('.sample-carousel');
+                const cards = Array.from(track.querySelectorAll('.sample-card'));
+                const dotsContainer = wrap.querySelector('.carousel-dots');
+
+                dotsContainer.innerHTML = '';
+                cards.forEach((card, index) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
+                    dot.type = 'button';
+                    dot.setAttribute('aria-label', `Go to sample ${index + 1}`);
+                    dot.addEventListener('click', () => {
+                        card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    });
+                    dotsContainer.appendChild(dot);
+                });
+
+                let ticking = false;
+                track.addEventListener('scroll', () => {
+                    if (ticking) return;
+                    ticking = true;
+                    window.requestAnimationFrame(() => {
+                        updateCarouselDots(wrap);
+                        ticking = false;
+                    });
+                });
+                updateCarouselDots(wrap);
+            });
+
+            document.querySelectorAll('.carousel-arrow').forEach(button => {
+                button.addEventListener('click', () => moveCarousel(button, Number(button.dataset.direction || 1)));
+            });
+        }
+
+        function updateCarouselDots(wrap) {
+            const track = wrap.querySelector('.sample-carousel');
+            const cards = Array.from(track.querySelectorAll('.sample-card'));
+            const dots = Array.from(wrap.querySelectorAll('.carousel-dot'));
+            if (!cards.length) return;
+
+            const trackCenter = track.scrollLeft + track.clientWidth / 2;
+            let activeIndex = 0;
+            let activeDistance = Infinity;
+
+            cards.forEach((card, index) => {
+                const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                const distance = Math.abs(cardCenter - trackCenter);
+                if (distance < activeDistance) {
+                    activeDistance = distance;
+                    activeIndex = index;
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === activeIndex);
+            });
+        }
+
+        function moveCarousel(button, direction) {
+            const wrap = button.closest('.carousel-wrap');
+            const track = wrap.querySelector('.sample-carousel');
+            const cards = Array.from(track.querySelectorAll('.sample-card'));
+            const dots = Array.from(wrap.querySelectorAll('.carousel-dot'));
+            const activeIndex = Math.max(0, dots.findIndex(dot => dot.classList.contains('active')));
+            const nextIndex = Math.min(cards.length - 1, Math.max(0, activeIndex + direction));
+            cards[nextIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+
+        function setupPreviewPlayback() {
+            const videos = Array.from(document.querySelectorAll('.sample-card video'));
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        const video = entry.target;
+                        if (entry.isIntersecting) {
+                            video.play().catch(() => {});
+                        } else {
+                            video.pause();
+                        }
+                    });
+                }, { threshold: 0.32 });
+
+                videos.forEach(video => observer.observe(video));
+            } else {
+                videos.forEach(video => video.play().catch(() => {}));
+            }
+        }
+
+        function pausePreviewVideos() {
+            document.querySelectorAll('.sample-card video').forEach(video => video.pause());
+        }
+
+        function playVisiblePreviewVideos() {
+            document.querySelectorAll('.sample-card video').forEach(video => {
+                const rect = video.getBoundingClientRect();
+                const visible = rect.bottom > 0 && rect.top < window.innerHeight && rect.right > 0 && rect.left < window.innerWidth;
+                if (visible) video.play().catch(() => {});
+            });
+        }
+
+        renderPortfolioCarousels();
+        setupPortfolioCarousels();
+        setupPreviewPlayback();
+
+        let currentSlide = 0;
+        let currentProject = null;
+
+        function openModal(key, startIndex = 0) {
+            currentProject = projects[key];
+            currentSlide = Math.min(Math.max(startIndex, 0), currentProject.slides.length - 1);
+            renderSlides();
+            updateModalTitle();
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            pausePreviewVideos();
+            playActiveVideo();
+        }
+
+        function updateModalTitle() {
+            const activeSlide = currentProject.slides[currentSlide];
+            document.getElementById('modalTitle').textContent = getSlideTitle(activeSlide, currentProject, currentSlide);
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.slide video').forEach(video => {
+                video.pause();
+                video.currentTime = 0;
+            });
+            document.querySelectorAll('.slide iframe').forEach(f => f.src = f.src);
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+            playVisiblePreviewVideos();
+        }
+
+        function handleOverlayClick(e) {
+            if (e.target === document.getElementById('modalOverlay')) closeModal();
+        }
+
+        function renderSlides() {
+            const wrapper = document.querySelector('.slides-wrapper');
+            // Remove old slides
+            wrapper.querySelectorAll('.slide').forEach(s => s.remove());
+
+            const dotsContainer = document.getElementById('modalDots');
+            dotsContainer.innerHTML = '';
+
+            currentProject.slides.forEach((slide, i) => {
+                const div = document.createElement('div');
+                div.className = 'slide' + (i === currentSlide ? ' active' : '');
+
+                if (slide.type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = slide.src;
+                    img.alt = slide.alt || 'Portfolio image';
+                    div.appendChild(img);
+                } else if (slide.src.includes('player.')) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = i === currentSlide ? slide.src : '';
+                    iframe.dataset.src = slide.src;
+                    iframe.allow = 'autoplay; fullscreen';
+                    iframe.allowFullscreen = true;
+                    div.appendChild(iframe);
+                } else {
+                    const video = document.createElement('video');
+                    video.controls = true;
+                    video.playsInline = true;
+                    video.preload = 'metadata';
+                    const source = document.createElement('source');
+                    source.src = slide.src;
+                    if (slide.mime) {
+                        source.type = slide.mime;
+                    }
+                    video.appendChild(source);
+                    div.appendChild(video);
+                }
+
+                // Insert before arrows
+                wrapper.insertBefore(div, wrapper.querySelector('.arrow.prev'));
+
+                // Dot
+                const dot = document.createElement('div');
+                dot.className = 'dot' + (i === currentSlide ? ' active' : '');
+                dot.setAttribute('aria-label', `Go to ${getSlideTitle(slide, currentProject, i)}`);
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function changeSlide(dir) {
+            const total = currentProject.slides.length;
+            goToSlide((currentSlide + dir + total) % total);
+        }
+
+        function goToSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            const dots   = document.querySelectorAll('.dot');
+
+            // Pause/clear previous video
+            const prevSlide = slides[currentSlide];
+            const prevIframe = prevSlide && prevSlide.querySelector('iframe');
+            if (prevIframe) prevIframe.src = '';
+            const prevVideo = prevSlide && prevSlide.querySelector('video');
+            if (prevVideo) prevVideo.pause();
+
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            updateModalTitle();
+
+            // Load video src lazily
+            const iframe = slides[currentSlide].querySelector('iframe');
+            if (iframe && !iframe.src) {
+                iframe.src = iframe.dataset.src;
+            }
+
+            playActiveVideo();
+        }
+
+        function playActiveVideo() {
+            const activeVideo = document.querySelector('.slide.active video');
+            if (activeVideo) {
+                activeVideo.play().catch(() => {});
+            }
+        }
+
+        // ── Hamburger ──
+        const btn  = document.getElementById('hamburgerBtn');
+        const menu = document.getElementById('mobileMenu');
+
+        btn.addEventListener('click', () => {
+            const isOpen = menu.classList.toggle('open');
+            btn.classList.toggle('open', isOpen);
+            btn.setAttribute('aria-expanded', isOpen);
+            menu.setAttribute('aria-hidden', !isOpen);
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('open');
+                btn.classList.remove('open');
+                btn.setAttribute('aria-expanded', false);
+                menu.setAttribute('aria-hidden', true);
+            });
+        });
+
+        // ── Keyboard nav ──
+        document.addEventListener('keydown', e => {
+            if (!document.getElementById('modalOverlay').classList.contains('active')) return;
+            if (e.key === 'ArrowLeft')  changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'Escape')     closeModal();
+        });
+    </script>
+
+</body>
+</html>

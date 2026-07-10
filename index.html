@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JASIMEDIA - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 0 50px;
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 22px;
+        }
+
+        .logo-wordmark {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: 1px;
+            color: #000;
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 400;
+            font-size: 12px;
+            letter-spacing: 0.8px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #667eea;
+        }
+
+        .cta-button {
+            background-color: #000;
+            color: #fff !important;
+            padding: 6px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: 0.8px;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #333 !important;
+            color: #fff !important;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 22px;
+            height: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 200;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 1.5px;
+            width: 100%;
+            background-color: #000;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding: 14px 24px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s, color 0.2s;
+            display: block;
+        }
+
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-menu a:hover {
+            background-color: #f8f8f8;
+            color: #667eea;
+        }
+
+        .mobile-menu .cta-button {
+            margin: 16px 24px;
+            text-align: center;
+            border-radius: 20px;
+            padding: 10px 24px;
+            background-color: #000;
+            color: #fff !important;
+            border-bottom: none;
+        }
+
+        .mobile-menu .cta-button:hover {
+            background-color: #333;
+        }
+
+        .hero-video-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .hero-video-section video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw;
+            min-height: 100vh;
+            min-width: 177.77vh;
+            transform: translate(-50%, -50%);
+        }
+
+        .hero-video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .hero-video-text {
+            text-align: center;
+            color: #fff;
+            z-index: 2;
+        }
+
+        .hero-video-text h1 {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 72px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero-video-text p {
+            font-size: 24px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero-watch-button {
+            margin-top: 32px;
+            padding: 12px 28px;
+            border: 1px solid rgba(255,255,255,0.75);
+            border-radius: 25px;
+            background-color: rgba(255,255,255,0.16);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            transition: background-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .hero-watch-button:hover {
+            background-color: rgba(255,255,255,0.28);
+            transform: translateY(-2px);
+        }
+
+        .meet-jasim-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 80px 50px;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .setup-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .meet-center {
+            text-align: center;
+        }
+
+        .meet-center h2 {
+            font-size: 72px;
+            color: #333;
+            margin-bottom: 14px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .meet-subtitle {
+            color: #777;
+            font-size: 13px;
+            letter-spacing: 1.6px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .meet-center button {
+            background-color: #000;
+            color: #fff;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .meet-center button:hover {
+            background-color: #333;
+        }
+
+        .jasim-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .services-section-wrapper {
+            background-color: #6b6b6b;
+            padding-bottom: 100px;
+        }
+
+        .services-header {
+            text-align: center;
+            font-size: 56px;
+            padding: 55px 50px 65px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            color: #000000;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 72px;
+            max-width: 1680px;
+            margin: 0 auto;
+            padding: 0 50px;
+        }
+
+        .service-card {
+            text-align: center;
+        }
+
+        .service-card h3 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #000000;
+        }
+
+        .service-content {
+            background-color: #fff;
+            padding: 40px 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .service-content.expandable {
+            cursor: pointer;
+        }
+
+        .service-content.expandable::after {
+            content: "";
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 3;
+            width: 18px;
+            height: 18px;
+            border-top: 2px solid rgba(255,255,255,0.85);
+            border-right: 2px solid rgba(255,255,255,0.85);
+            opacity: 0.75;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .service-content.expandable:hover::after {
+            opacity: 1;
+            transform: translate(2px, -2px);
+        }
+
+        .service-content:not(.media-content).expandable::after {
+            border-color: rgba(0,0,0,0.35);
+        }
+
+        .service-content h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            color: #000000;
+        }
+
+        .service-content p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #666;
+            font-family: 'Courier New', monospace;
+        }
+
+        .service-content.media-content {
+            padding: 0;
+            justify-content: center;
+            background-color: #000;
+        }
+
+        .photo-slideshow,
+        .video-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .photo-slide {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0;
+            transform: scale(1.03);
+            animation: photoFade 12s infinite;
+        }
+
+        .photo-slide:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .photo-slide:nth-child(2) {
+            animation-delay: 4s;
+        }
+
+        .photo-slide:nth-child(3) {
+            animation-delay: 8s;
+        }
+
+        @keyframes photoFade {
+            0% { opacity: 0; }
+            8% { opacity: 1; }
+            30% { opacity: 1; }
+            40% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .service-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            background-color: #000;
+        }
+
+        .editing-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .media-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            padding: 56px 24px 22px;
+            text-align: left;
+            color: #fff;
+            background: linear-gradient(to top, rgba(0,0,0,0.72), rgba(0,0,0,0));
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .media-overlay h4 {
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .media-overlay p {
+            color: rgba(255,255,255,0.82);
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .video-play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 2;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(255,255,255,0.65);
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+            transition: opacity 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .video-play-button::before {
+            content: "";
+            width: 0;
+            height: 0;
+            margin-left: 5px;
+            border-top: 13px solid transparent;
+            border-bottom: 13px solid transparent;
+            border-left: 20px solid rgba(255,255,255,0.95);
+        }
+
+        .video-play-button:hover {
+            background-color: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .video-card.playing .video-play-button,
+        .video-card.playing .media-overlay {
+            opacity: 0;
+        }
+
+        .video-card.playing .video-play-button {
+            pointer-events: none;
+        }
+
+        .media-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 72px 28px 32px;
+            background-color: rgba(0,0,0,0.82);
+        }
+
+        .media-modal.open {
+            display: flex;
+        }
+
+        .media-modal-dialog {
+            position: relative;
+            width: min(1100px, 92vw);
+            max-height: 82vh;
+        }
+
+        .media-modal-close {
+            position: absolute;
+            top: -48px;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.14);
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+        }
+
+        .media-modal-close::before,
+        .media-modal-close::after {
+            content: "";
+            position: absolute;
+            top: 17px;
+            left: 9px;
+            width: 16px;
+            height: 2px;
+            background-color: #fff;
+            border-radius: 2px;
+        }
+
+        .media-modal-close::before {
+            transform: rotate(45deg);
+        }
+
+        .media-modal-close::after {
+            transform: rotate(-45deg);
+        }
+
+        .media-modal-body {
+            width: 100%;
+        }
+
+        .large-photo-frame,
+        .modal-video-card {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            max-height: 82vh;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: #000;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+        }
+
+        .large-photo-frame .photo-slide {
+            object-fit: contain;
+        }
+
+        .large-photo-frame.click-photo-frame {
+            cursor: pointer;
+        }
+
+        .large-photo-frame.click-photo-frame .photo-slide {
+            animation: none;
+            transform: none;
+            z-index: 0;
+            transition: opacity 0.48s ease;
+            pointer-events: none;
+            will-change: opacity;
+        }
+
+        .large-photo-frame.click-photo-frame .photo-slide.active {
+            z-index: 1;
+            opacity: 1;
+        }
+
+        .photo-nav {
+            position: absolute;
+            top: 50%;
+            z-index: 3;
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(-50%);
+            border: 1px solid rgba(255,255,255,0.55);
+            border-radius: 50%;
+            background-color: rgba(0,0,0,0.34);
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .photo-nav::before {
+            content: "";
+            width: 13px;
+            height: 13px;
+            display: block;
+            border-top: 2px solid #fff;
+            border-right: 2px solid #fff;
+            transform-origin: center;
+        }
+
+        .photo-nav:hover {
+            background-color: rgba(255,255,255,0.24);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .photo-nav-prev {
+            left: 18px;
+        }
+
+        .photo-nav-prev::before {
+            transform: rotate(-135deg);
+        }
+
+        .photo-nav-next {
+            right: 18px;
+        }
+
+        .photo-nav-next::before {
+            transform: rotate(45deg);
+        }
+
+        .single-image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .modal-video-card .service-video {
+            height: 100%;
+        }
+
+        .hero-modal-video {
+            width: 100%;
+            max-height: 82vh;
+            display: block;
+            border-radius: 10px;
+            background-color: #000;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+        }
+
+        .large-text-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+            padding: 48px;
+            text-align: center;
+        }
+
+        .large-text-card h3 {
+            font-size: 42px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+        }
+
+        .large-text-card h4 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .large-text-card p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #666;
+        }
+
+        .social-section {
+            background-color: #000000;
+            color: #fff;
+            padding: 80px 50px;
+            text-align: center;
+        }
+
+        .social-section h2 {
+            font-size: 48px;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .social-section p {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0 20px;
+                height: 44px;
+                position: sticky;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero-video-text h1 {
+                font-size: 42px;
+            }
+
+            .hero-video-text p {
+                font-size: 16px;
+            }
+
+            .hero-watch-button {
+                margin-top: 24px;
+                padding: 10px 22px;
+                font-size: 12px;
+            }
+
+            .meet-jasim-section {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 50px 24px;
+            }
+
+            .meet-center h2 {
+                font-size: 48px;
+            }
+
+            .setup-image,
+            .jasim-image {
+                height: 260px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                padding: 0 24px;
+                gap: 30px;
+            }
+
+            .services-header {
+                font-size: 36px;
+                padding: 60px 24px 30px;
+            }
+
+            .service-content {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .meet-jasim-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo logo-wordmark">JASIMEDIA</div>
+
+        <nav>
+            <a href="#home">HOME</a>
+            <a href="#me">ME</a>
+            <a href="#portfolio">PORTFOLIO</a>
+            <a href="#testimonials">TESTIMONIALS</a>
+            <a href="#services">SERVICES</a>
+            <a href="#contact" class="cta-button">CONTACT</a>
+        </nav>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+            <a href="#home" class="mobile-link">HOME</a>
+            <a href="#me" class="mobile-link">ME</a>
+            <a href="#portfolio" class="mobile-link">PORTFOLIO</a>
+            <a href="#testimonials" class="mobile-link">TESTIMONIALS</a>
+            <a href="#services" class="mobile-link">SERVICES</a>
+            <a href="#contact" class="cta-button mobile-link">CONTACT</a>
+        </div>
+    </header>
+
+    <section class="hero-video-section" id="home">
+        <video autoplay loop muted playsinline preload="auto">
+            <source src="JASIMEDIA 2025 RECAP.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-video-overlay">
+            <div class="hero-video-text">
+                <h1>JASIMEDIA</h1>
+                <p>VISUAL STORYTELLING</p>
+                <button class="hero-watch-button" type="button" id="heroWatchButton">WATCH FULL VIDEO</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="meet-jasim-section">
+        <div class="meet-center">
+            <h2>MEET JASIM</h2>
+            <p class="meet-subtitle">Founder, Creative Director & Storyteller Behind Jasimedia</p>
+            <button>Learn More</button>
+        </div>
+
+            <img src="jasimediajasimpicture.webp" alt="Jasim" class="jasim-image">
+    </section>
+
+    <div class="services-section-wrapper">
+        <h2 class="services-header">SERVICES</h2>
+
+        <section class="services-grid" id="services">
+            <div class="service-card">
+                <h3>Photography</h3>
+                <div class="service-content media-content expandable" data-expand="photography" tabindex="0" aria-label="Open photography slideshow larger">
+                    <div class="photo-slideshow" aria-label="Photography slideshow">
+                        <img src="jasimediahomepagephotography1.webp" alt="JASIMEDIA photography sample 1" class="photo-slide" loading="lazy">
+                        <img src="jasimediahomepagephotography2.webp" alt="JASIMEDIA photography sample 2" class="photo-slide" loading="lazy">
+                        <img src="jasimediahomepagephotography3.webp" alt="JASIMEDIA photography sample 3" class="photo-slide" loading="lazy">
+                        <div class="media-overlay">
+                            <h4>Photography</h4>
+                            <p>Portraits, events, and clean visual storytelling.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <h3>Videography</h3>
+                <div class="service-content media-content expandable" data-expand="videography" tabindex="0" aria-label="Open videography sample larger">
+                    <div class="video-card">
+                        <video class="service-video" playsinline preload="metadata">
+                            <source src="jasimhomepagevideography 2hollis.MOV">
+                            Your browser does not support the video tag.
+                        </video>
+                        <button class="video-play-button" type="button" aria-label="Play videography sample"></button>
+                        <div class="media-overlay">
+                            <h4>Videography</h4>
+                            <p>Motion-first coverage made for polished digital delivery.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <h3>Editing</h3>
+                <div class="service-content media-content expandable" data-expand="editing" tabindex="0" aria-label="Open editing sample larger">
+                    <img src="jasimediahomepageeditingpicture.webp" alt="JASIMEDIA editing setup" class="editing-image" loading="lazy">
+                    <div class="media-overlay">
+                        <h4>Editing</h4>
+                        <p>Clean cuts, pacing, and polished final delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="media-modal" id="mediaModal" aria-hidden="true">
+        <div class="media-modal-dialog" role="dialog" aria-modal="true" aria-label="Expanded service media">
+            <button class="media-modal-close" type="button" aria-label="Close expanded media"></button>
+            <div class="media-modal-body" id="mediaModalBody"></div>
+        </div>
+    </div>
+
+    <section class="social-section">
+        <h2>Social Media</h2>
+        <p>Follow me on Instagram for the most up-to-date content</p>
+        <a href="https://www.instagram.com/jasimabudan/?hl=en" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; padding: 14px 32px; border: 2px solid #fff; border-radius: 25px; color: #fff; text-decoration: none; font-size: 15px; font-weight: 500; letter-spacing: 1.5px; transition: background-color 0.3s, color 0.3s;" onmouseover="this.style.backgroundColor='#fff'; this.style.color='#000';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#fff';">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+            @jasimabudan
+        </a>
+    </section>
+
+    <footer style="background-color: #6b6b6b; padding: 24px 50px; text-align: center;">
+        <p style="color: #fff; font-size: 14px; letter-spacing: 1px; opacity: 0.85; margin: 0;">© 2026 JASIMEDIA. All rights reserved. All images are copyrighted. Unauthorized use is prohibited.</p>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('hamburgerBtn');
+        const menu = document.getElementById('mobileMenu');
+
+        btn.addEventListener('click', () => {
+            const isOpen = menu.classList.toggle('open');
+            btn.classList.toggle('open', isOpen);
+            btn.setAttribute('aria-expanded', isOpen);
+            menu.setAttribute('aria-hidden', !isOpen);
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('open');
+                btn.classList.remove('open');
+                btn.setAttribute('aria-expanded', false);
+                menu.setAttribute('aria-hidden', true);
+            });
+        });
+
+        const setupVideoCard = card => {
+            if (card.dataset.ready === 'true') {
+                return;
+            }
+
+            const video = card.querySelector('video');
+            const playButton = card.querySelector('.video-play-button');
+
+            if (!video || !playButton) {
+                card.dataset.ready = 'true';
+                return;
+            }
+
+            const updateState = () => {
+                const isPlaying = !video.paused && !video.ended;
+                const overlay = card.querySelector('.media-overlay');
+
+                card.classList.toggle('playing', isPlaying);
+                playButton.style.opacity = isPlaying ? '0' : '1';
+                playButton.style.pointerEvents = isPlaying ? 'none' : 'auto';
+
+                if (overlay) {
+                    overlay.style.opacity = isPlaying ? '0' : '1';
+                }
+            };
+
+            const toggleVideo = () => {
+                if (video.paused || video.ended) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            };
+
+            playButton.addEventListener('click', event => {
+                event.stopPropagation();
+                if (card.closest('[data-expand="videography"]')) {
+                    openMediaModal('videography');
+                    return;
+                }
+                toggleVideo();
+            });
+
+            video.addEventListener('play', updateState);
+            video.addEventListener('pause', updateState);
+            video.addEventListener('ended', updateState);
+            card.dataset.ready = 'true';
+        };
+
+        document.querySelectorAll('.video-card').forEach(setupVideoCard);
+
+        const mediaModal = document.getElementById('mediaModal');
+        const mediaModalBody = document.getElementById('mediaModalBody');
+        const mediaModalClose = mediaModal.querySelector('.media-modal-close');
+        const photographyImageSources = [
+            'jasimediahomepagephotography1.webp',
+            'jasimediahomepagephotography2.webp',
+            'jasimediahomepagephotography3.webp'
+        ];
+
+        photographyImageSources.forEach(src => {
+            const image = new Image();
+            image.src = src;
+        });
+
+        const expandedMedia = {
+            photography: `
+                <div class="large-photo-frame click-photo-frame" aria-label="Expanded photography images" role="button" tabindex="0">
+                    <img src="jasimediahomepagephotography1.webp" alt="JASIMEDIA photography sample 1" class="photo-slide active">
+                    <img src="jasimediahomepagephotography2.webp" alt="JASIMEDIA photography sample 2" class="photo-slide">
+                    <img src="jasimediahomepagephotography3.webp" alt="JASIMEDIA photography sample 3" class="photo-slide">
+                    <button class="photo-nav photo-nav-prev" type="button" aria-label="Previous photography image" data-photo-direction="previous"></button>
+                    <button class="photo-nav photo-nav-next" type="button" aria-label="Next photography image" data-photo-direction="next"></button>
+                </div>
+            `,
+            videography: `
+                <div class="video-card modal-video-card">
+                    <video class="service-video" controls autoplay playsinline preload="auto">
+                        <source src="jasimhomepagevideography 2hollis.MOV">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            `,
+            editing: `
+                <div class="large-photo-frame single-image-frame" aria-label="Expanded editing setup image">
+    <img src="jasimediahomepageeditingpicture.webp" alt="JASIMEDIA editing setup">
+                </div>
+            `,
+            hero: `
+                <video class="hero-modal-video" controls autoplay playsinline preload="auto">
+                    <source src="JASIMEDIA 2025 RECAP.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            `
+        };
+
+        const closeMediaModal = () => {
+            mediaModal.querySelectorAll('video').forEach(video => video.pause());
+            mediaModal.classList.remove('open');
+            mediaModal.setAttribute('aria-hidden', true);
+            mediaModalBody.innerHTML = '';
+        };
+
+        const openMediaModal = type => {
+            document.querySelectorAll('.service-video').forEach(video => video.pause());
+            mediaModalBody.innerHTML = expandedMedia[type];
+            mediaModal.classList.add('open');
+            mediaModal.setAttribute('aria-hidden', false);
+            mediaModal.querySelectorAll('.video-card').forEach(setupVideoCard);
+
+            const clickPhotoFrame = mediaModal.querySelector('.click-photo-frame');
+            if (clickPhotoFrame) {
+                const slides = Array.from(clickPhotoFrame.querySelectorAll('.photo-slide'));
+                let activeSlideIndex = 0;
+                const showSlide = nextSlideIndex => {
+                    slides[activeSlideIndex].classList.remove('active');
+                    activeSlideIndex = (nextSlideIndex + slides.length) % slides.length;
+                    slides[activeSlideIndex].classList.add('active');
+                };
+                const showNextSlide = () => showSlide(activeSlideIndex + 1);
+                const showPreviousSlide = () => showSlide(activeSlideIndex - 1);
+
+                clickPhotoFrame.addEventListener('click', showNextSlide);
+                clickPhotoFrame.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        showNextSlide();
+                    }
+
+                    if (event.key === 'ArrowLeft') {
+                        event.preventDefault();
+                        showPreviousSlide();
+                    }
+
+                    if (event.key === 'ArrowRight') {
+                        event.preventDefault();
+                        showNextSlide();
+                    }
+                });
+
+                clickPhotoFrame.querySelector('[data-photo-direction="previous"]').addEventListener('click', event => {
+                    event.stopPropagation();
+                    showPreviousSlide();
+                });
+
+                clickPhotoFrame.querySelector('[data-photo-direction="next"]').addEventListener('click', event => {
+                    event.stopPropagation();
+                    showNextSlide();
+                });
+            }
+
+            const heroModalVideo = mediaModal.querySelector('.hero-modal-video');
+            if (heroModalVideo) {
+                heroModalVideo.muted = false;
+                heroModalVideo.volume = 1;
+                heroModalVideo.play();
+            }
+
+            const modalServiceVideo = mediaModal.querySelector('.modal-video-card .service-video');
+            if (modalServiceVideo) {
+                modalServiceVideo.muted = false;
+                modalServiceVideo.volume = 1;
+                modalServiceVideo.play().catch(() => {});
+            }
+
+            mediaModalClose.focus();
+        };
+
+        document.getElementById('heroWatchButton').addEventListener('click', () => {
+            openMediaModal('hero');
+        });
+
+        document.querySelectorAll('[data-expand]').forEach(card => {
+            card.addEventListener('click', () => openMediaModal(card.dataset.expand));
+            card.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openMediaModal(card.dataset.expand);
+                }
+            });
+        });
+
+        mediaModalClose.addEventListener('click', closeMediaModal);
+
+        mediaModal.addEventListener('click', event => {
+            if (event.target === mediaModal) {
+                closeMediaModal();
+            }
+        });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && mediaModal.classList.contains('open')) {
+                closeMediaModal();
+            }
+        });
+    </script>
+</body>
+</html>
